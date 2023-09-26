@@ -27,3 +27,7 @@ application:
       expiration: 86400000 # a day
       refresh-token:
         expiration: 604800000 # 7 days
+  discord:
+    client-id: 1155291213142949918
+    client-secret: iI8-WuhOjiCulyi5FEakasIV3-mvswc4
+    api-uri: https://discord.com/api/v10
