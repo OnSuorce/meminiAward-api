@@ -29,5 +29,5 @@ application:
         expiration: 604800000 # 7 days
   discord:
     client-id: 1155291213142949918
-    client-secret: iI8-WuhOjiCulyi5FEakasIV3-mvswc4
+    client-secret: iI8-WuhOjiCulyi5FEakasIV3-mxasdaw
     api-uri: https://discord.com/api/v10
