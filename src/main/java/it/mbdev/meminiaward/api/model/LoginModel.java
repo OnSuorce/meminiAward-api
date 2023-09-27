@@ -12,6 +12,16 @@ import lombok.ToString;
 @NoArgsConstructor
 public class LoginModel {
 
-    @JsonProperty("access_token")
-    private String accessToken;
+    public LoginModel(String jwt){
+        setJwtToken(jwt);
+    }
+
+    @JsonProperty("code")
+    private String code;
+
+    @JsonProperty("redirect_uri")
+    private String redirectUri;
+
+    @JsonProperty("jwt_token")
+    private String jwtToken;
 }

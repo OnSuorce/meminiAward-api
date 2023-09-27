@@ -24,6 +24,9 @@ public class User implements UserDetails {
     private String discordToken;
     private List<Roles> roles;
     private int numberOfAwards;
+    public String discordAvatarUrl;
+    public String discordGlobalName;
+    public String discordId;
 
 
     @Override
@@ -42,6 +45,10 @@ public class User implements UserDetails {
         return roles.stream().map(r -> new SimpleGrantedAuthority(r.getRoleName())).collect(Collectors.toList());
     }
 
+    @Override
+    public  String getUsername(){
+        return username;
+    }
     @Override
     public String getPassword() {
         return discordToken;

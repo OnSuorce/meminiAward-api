@@ -1,7 +1,9 @@
 package it.mbdev.meminiaward.api;
 
 import it.mbdev.meminiaward.api.model.LoginModel;
+import it.mbdev.meminiaward.entity.User;
 import it.mbdev.meminiaward.service.DiscordService;
+import it.mbdev.meminiaward.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,21 +15,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/auth/")
 public class AuthController {
 
-    @Autowired
+    final
     DiscordService discordService;
+
+    final
+    JwtService jwtService;
+
+
+    public AuthController(DiscordService discordService, JwtService jwtService) {
+        this.discordService = discordService;
+        this.jwtService = jwtService;
+    }
+
     @PostMapping("/login")
-    public String login(@RequestBody LoginModel loginModel){
+    public LoginModel login(@RequestBody LoginModel loginModel){
 
-        //Complete oauth with discord
-        discordService.completeAuthentication(loginModel.getAccessToken());
-        //Make new account
 
-        //Create jwt token
+        User u = discordService.completeAuthentication(loginModel.getCode());
 
-        //Send back jwt token
 
-        System.out.println("EVERYTHIN IS FINE");
-        return  "WOW";
+        return new LoginModel(jwtService.generateToken(u));
 
     }
 }
