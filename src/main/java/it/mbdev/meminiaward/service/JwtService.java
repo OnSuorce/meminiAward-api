@@ -11,6 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import it.mbdev.meminiaward.entity.Token;
+import it.mbdev.meminiaward.entity.User;
+import it.mbdev.meminiaward.repository.TokenRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,9 @@ public class JwtService {
     private long jwtExpiration;
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshExpiration;
+
+    @Autowired
+    TokenRepository tokenRepository;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -91,5 +98,21 @@ public class JwtService {
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public void saveToken(String token, User u){
+        Token t = Token.builder()
+                .token(token)
+                .user(u)
+                .tokenType("JWT")
+                .expired(false)
+                .revoked(false)
+                .build();
+
+        tokenRepository.save(t);
+    }
+
+    public void expireAllTokensOfUser(User u) {
+
     }
 }

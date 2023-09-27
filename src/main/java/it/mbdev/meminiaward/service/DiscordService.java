@@ -1,6 +1,7 @@
 package it.mbdev.meminiaward.service;
 
 import it.mbdev.meminiaward.entity.User;
+import it.mbdev.meminiaward.security.Roles;
 import it.mbdev.meminiaward.service.model.DiscordOAuthResponse;
 import it.mbdev.meminiaward.service.model.DiscordUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class DiscordService {
@@ -30,6 +36,7 @@ public class DiscordService {
         DiscordUser du = getDiscordUserInformation(dor.getAccessToken());
         User user;
         if(userService.getUser(du.getUsername()).isEmpty()){
+
             user = User.builder()
                     .username(du.getUsername())
                     .numberOfAwards(2)
@@ -37,7 +44,9 @@ public class DiscordService {
                     .discordId(du.getId())
                     .discordToken(dor.getAccessToken())
                     .discordAvatarUrl(getDiscordUserImageUrl(du))
+                    .roles(new ArrayList<>())
                     .build();
+            user.getRoles().addAll(List.of(new Roles[]{Roles.ROLE_USER, Roles.ROLE_VOTER}));
             userService.saveUser(user);
         }else {
             user = userService.getUser(du.getUsername()).get();

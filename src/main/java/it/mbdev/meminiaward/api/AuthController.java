@@ -1,6 +1,7 @@
 package it.mbdev.meminiaward.api;
 
 import it.mbdev.meminiaward.api.model.LoginModel;
+import it.mbdev.meminiaward.entity.Token;
 import it.mbdev.meminiaward.entity.User;
 import it.mbdev.meminiaward.service.DiscordService;
 import it.mbdev.meminiaward.service.JwtService;
@@ -33,8 +34,13 @@ public class AuthController {
 
         User u = discordService.completeAuthentication(loginModel.getCode());
 
+        String t =  jwtService.generateToken(u);
 
-        return new LoginModel(jwtService.generateToken(u));
+        jwtService.saveToken(t,u);
+
+        return new LoginModel(t);
 
     }
+
+
 }

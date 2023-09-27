@@ -55,7 +55,7 @@ public class SecurityConfiguration {
 
 
                 .requestMatchers("/api/v1/management/**").authenticated()
-
+                .requestMatchers(GET, "/api/users/me").authenticated()
 
                 .requestMatchers(GET, "/api/v1/management/**").authenticated()
                 .requestMatchers(POST, "/api/v1/management/**").authenticated()
