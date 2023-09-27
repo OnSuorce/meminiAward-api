@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -113,6 +114,10 @@ public class JwtService {
     }
 
     public void expireAllTokensOfUser(User u) {
-
+        List<Token> tokens = tokenRepository.findActiveTokensByUser(u);
+        tokens.forEach(token -> {
+            token.setRevoked(true);
+            tokenRepository.save(token);
+        });
     }
 }

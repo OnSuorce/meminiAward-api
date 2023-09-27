@@ -2,6 +2,7 @@ package it.mbdev.meminiaward.api;
 
 import it.mbdev.meminiaward.api.model.UserModel;
 import it.mbdev.meminiaward.entity.User;
+import it.mbdev.meminiaward.exceptions.ForbiddenException;
 import it.mbdev.meminiaward.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,18 +19,10 @@ public class UserController {
 
     @GetMapping("/me")
     public UserModel getLoggedUserInformation(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null && authentication.isAuthenticated()) {
-            // The user is authenticated, you can access user details
-            String username = authentication.getName();
-            // Additional user details may be obtained from authentication.getAuthorities()
-
-            return new UserModel(userService.getUser(username).orElse(null));
-        } else {
-            // No user is authenticated
-            return null;
-        }
+            return new UserModel(userService
+                    .getUser(AuthController.getLoggedUsername())
+                    .orElseThrow(ForbiddenException::new));
 
     }
 }

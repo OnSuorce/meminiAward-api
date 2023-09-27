@@ -50,6 +50,7 @@ public class DiscordService {
             userService.saveUser(user);
         }else {
             user = userService.getUser(du.getUsername()).get();
+
         }
         return user;
     }
