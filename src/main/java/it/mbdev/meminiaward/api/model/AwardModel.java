@@ -19,7 +19,10 @@ public class AwardModel {
 
         creator = a.getCreator().getUsername();
 
+        id = a.getId();
+
     }
+    private String id;
     private String title;
     private String description;
 

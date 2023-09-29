@@ -2,10 +2,10 @@ package it.mbdev.meminiaward.service;
 
 import it.mbdev.meminiaward.entity.User;
 import it.mbdev.meminiaward.security.Roles;
-import it.mbdev.meminiaward.service.model.DiscordOAuthResponse;
-import it.mbdev.meminiaward.service.model.DiscordUser;
+import it.mbdev.meminiaward.service.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -50,8 +50,8 @@ public class DiscordService {
             userService.saveUser(user);
         }else {
             user = userService.getUser(du.getUsername()).get();
-
         }
+
         return user;
     }
 
@@ -113,6 +113,30 @@ public class DiscordService {
 
     public String getDiscordUserImageUrl(DiscordUser du){
         return DiscordApiUrl.CDN_AVATAR.getUrl() + du.getId() + "/" + du.getAvatar() + ".png";
+    }
+
+    public List<DiscordGuild> getUserGuilds(String token){
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<List<DiscordGuild>> response = restTemplate.exchange(
+                getRequest(token,DiscordApiUrl.BASE_URL.getUrl()+DiscordApiUrl.USER_GUILDS.getUrl()),
+                new ParameterizedTypeReference<>() {
+                });
+
+        return response.getBody();
+    }
+
+    public DiscordGuildMember getUserGuildInfo(String token, String guild){
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<DiscordGuildMember> response = restTemplate.exchange(
+                getRequest(token,DiscordApiUrl.BASE_URL.getUrl()+DiscordApiUrl.USER_GUILD_INFO.getUrl().replace("#",guild)),
+                DiscordGuildMember.class);
+
+        System.out.println("USER GUILD");
+        System.out.println(response);
+
+        return response.getBody();
     }
 
 }

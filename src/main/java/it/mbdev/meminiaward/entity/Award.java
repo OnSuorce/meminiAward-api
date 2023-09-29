@@ -24,7 +24,7 @@ public class Award {
     private String imageUrl;
     @DBRef
     private User creator;
-    private Set<Votes> votesList;
+    private Set<Vote> voteList;
     @DBRef
     private AwardingEvent awardingEvent;
 

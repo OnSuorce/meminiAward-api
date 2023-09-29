@@ -5,6 +5,7 @@ import it.mbdev.meminiaward.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,5 +20,10 @@ public class UserService {
 
     public void saveUser(User u){
         userRepository.save(u);
+    }
+
+    public List<User> listUsers() {
+
+        return userRepository.findAll();
     }
 }

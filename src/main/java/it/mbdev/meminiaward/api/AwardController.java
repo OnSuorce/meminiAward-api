@@ -5,6 +5,7 @@ import it.mbdev.meminiaward.api.model.UserModel;
 import it.mbdev.meminiaward.entity.Award;
 import it.mbdev.meminiaward.entity.User;
 import it.mbdev.meminiaward.exceptions.ForbiddenException;
+import it.mbdev.meminiaward.security.MeminiAuthn;
 import it.mbdev.meminiaward.service.AwardService;
 import it.mbdev.meminiaward.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,9 @@ public class AwardController {
     @Autowired
     private UserService userService;
 
+    @MeminiAuthn
     @GetMapping
     public List<AwardModel> getAwardList(){
-        userService.getUser(AuthController.getLoggedUsername()).orElseThrow(ForbiddenException::new);
         List<Award> awards =  awardService.getAwardList();
        List<AwardModel> awardModels = awards.stream().map(award -> new AwardModel(award)).toList();
        return awardModels;

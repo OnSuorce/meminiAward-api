@@ -41,6 +41,8 @@ public class AuthController {
             return null;
         }
     }
+
+
     public AuthController(DiscordService discordService, JwtService jwtService, UserService userService) {
         this.discordService = discordService;
         this.jwtService = jwtService;

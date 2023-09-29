@@ -13,7 +13,7 @@ public interface TokenRepository extends MongoRepository<Token, Integer> {
 
     List<Token> findAllValidTokenByUser(Integer id);
 
-    @Query("{'user.id': ?0, 'expired': false, 'revoked': false}")
+    @Query("{'user': ?0, 'expired': false, 'revoked': false}")
     List<Token> findActiveTokensByUser(User user);
 
     Optional<Token> findByToken(String token);
