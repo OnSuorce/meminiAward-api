@@ -53,7 +53,7 @@ public class AuthController {
     public LoginModel login(@RequestBody LoginModel loginModel){
 
 
-        User u = discordService.completeAuthentication(loginModel.getCode());
+        User u = discordService.completeAuthentication(loginModel.getCode(), loginModel.getRedirectUri());
 
         String t =  jwtService.generateToken(u);
         jwtService.expireAllTokensOfUser(u);

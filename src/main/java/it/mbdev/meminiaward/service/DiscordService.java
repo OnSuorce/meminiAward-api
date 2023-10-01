@@ -30,8 +30,8 @@ public class DiscordService {
     @Autowired
     private UserService userService;
 
-    public User completeAuthentication(String accessToken){
-        DiscordOAuthResponse dor = getDiscordToken(accessToken).getBody();
+    public User completeAuthentication(String accessToken, String uri){
+        DiscordOAuthResponse dor = getDiscordToken(accessToken, uri).getBody();
 
         DiscordUser du = getDiscordUserInformation(dor.getAccessToken());
         User user;
@@ -55,7 +55,7 @@ public class DiscordService {
         return user;
     }
 
-    private ResponseEntity<DiscordOAuthResponse> getDiscordToken(String code){
+    private ResponseEntity<DiscordOAuthResponse> getDiscordToken(String code, String uri){
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -66,7 +66,7 @@ public class DiscordService {
         body.add("client_secret", secretKey);
         body.add("grant_type", "authorization_code");
         body.add("code", code);
-        body.add("redirect_uri", "http://localhost:4200/login");
+        body.add("redirect_uri", uri);
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
 
